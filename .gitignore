@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/NzWalks/NzWalks.Api/obj
+/NzWalks/NzWalks.Api/bin/Debug/net7.0
+/NzWalks/.vs/NzWalks/v17/.suo
