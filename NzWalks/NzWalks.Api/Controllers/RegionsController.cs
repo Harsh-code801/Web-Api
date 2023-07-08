@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NzWalks.Api.Data;
+using NzWalks.Api.Dtos;
 using NzWalks.Api.Models.Domain;
+using NzWalks.Api.Repositories;
 
 namespace NzWalks.Api.Controllers
 {
@@ -10,48 +13,55 @@ namespace NzWalks.Api.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly NzWalksDbContext _dbContext;
-        public RegionsController(NzWalksDbContext dbContext)
+        private readonly IResionRepositories sqlResionRepositories;
+
+        public RegionsController(IResionRepositories sqlResionRepositories)
         {
-            this._dbContext = dbContext;
+            this.sqlResionRepositories = sqlResionRepositories;
         }
 
         [HttpGet]
-        public IActionResult GetRegions()
+        public async Task<IActionResult> GetRegions()
         {
-            return Ok(_dbContext.Regions.ToList());
+            var regions = await sqlResionRepositories.GetRegions();
+            #region AutoMapper
+            /*var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<List<Region>, List<RegionDto>>().ForMember("Id",x=>x.Ignore());
+                //cfg.CreateMap<List<RegionDto>, List<Region>>().ReverseMap();
+            });
+            IMapper iMapper = config.CreateMapper();
+            var MappedValuc = iMapper.Map<List<Region>, List<RegionDto>>(regions);*/
+            #endregion
+
+            return Ok(regions);
         }
         [HttpGet]
         [Route("{id:Guid}")]//id is case sensitive with parameters id
-        public IActionResult GetRegionsById(Guid id)
+        public async Task<IActionResult> GetRegionsById(Guid id)
         {
-            var region = _dbContext.Regions.Find(id);
+            var region = await sqlResionRepositories.GetRegionsById(id);
             if (region != null)
+            {
                 return Ok(region);
+            }
             else
                 return NotFound();
         }
         [HttpPost]
-        public IActionResult AddRegion([FromBody] Region region)
+        public async Task<IActionResult> AddRegion([FromBody] Region region)
         {
             region.Id = Guid.NewGuid();
-            _dbContext.Regions.Add(region);
-            _dbContext.SaveChanges();
-
+            await sqlResionRepositories.AddRegion(region);
             return CreatedAtAction(nameof(GetRegionsById), new { id = region.Id }, region);
         }
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult UpdateRegion(Guid id,[FromBody] Region region) 
+        public async Task<IActionResult> UpdateRegion(Guid id,[FromBody] Region region) 
         {
-            var regionupdate = _dbContext.Regions.FirstOrDefault(x=>x.Id == id);
+            var regionupdate = await sqlResionRepositories.UpdateRegion(id, region);
             if(regionupdate != null)
             {
-                regionupdate.Name = region.Name;
-                regionupdate.Code = region.Code;
-                regionupdate.RegionImageUrl = region.RegionImageUrl;
-
-                _dbContext.SaveChanges();
                 return Ok(regionupdate);
             }
             else
@@ -59,13 +69,11 @@ namespace NzWalks.Api.Controllers
         }
         [HttpDelete]
         [Route("{id:guid}")]
-        public IActionResult DeleteRegion([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
-            var region =  _dbContext.Regions.FirstOrDefault(x => x.Id == id);
+            var region = await sqlResionRepositories.DeleteRegion(id);
             if(region != null)
-            {
-                _dbContext.Remove(region);
-                _dbContext.SaveChanges();
+            {   
                 return Ok(region);
             }
             else

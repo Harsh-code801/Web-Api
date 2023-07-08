@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using NzWalks.Api.Data;
+using NzWalks.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<NzWalksDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksServer"));
-});
-
+builder.Services.AddDbContext<NzWalksDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksServer")));
+builder.Services.AddScoped<IResionRepositories, SqlResionRepositories>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
