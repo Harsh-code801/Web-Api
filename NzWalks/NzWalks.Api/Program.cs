@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using NzWalks.Api.AutoMapper;
 using NzWalks.Api.Data;
 using NzWalks.Api.Repositories;
 
@@ -14,6 +16,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<NzWalksDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksServer")));
 builder.Services.AddScoped<IResionRepositories, SqlResionRepositories>();
+builder.Services.AddScoped<IWalks, SqlWalksRepositories>();
+builder.Services.AddAutoMapper(typeof(AutomapperProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
