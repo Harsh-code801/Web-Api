@@ -12,9 +12,17 @@ namespace NzWalks.Api.Repositories
         {
             this.dbContext = dbContext;
         }
-        public async Task<List<Walks>> GetWalks()
+        public async Task<List<Walks>> GetWalks(string filterOn = null, string filterValue = null, int pageSize=1000, int pageNumber = 1)
         {
-            return (await dbContext.walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync());
+            var walks = dbContext.walks.Include(x => x.Difficulty).Include(x => x.Region).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterValue))
+            {
+                if(string.Equals("name",filterOn,StringComparison.OrdinalIgnoreCase))
+                    return await walks.Where(x=>x.Name.Contains(filterValue)).OrderBy(x=>x.Name).Skip((pageNumber-1)*pageSize).Take(pageSize).ToListAsync();
+            }
+
+            return await walks.OrderByDescending(x => x.Name).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            //return (await dbContext.walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync());
         }
         public async Task<Walks?> GetWalksById(Guid id)
         {

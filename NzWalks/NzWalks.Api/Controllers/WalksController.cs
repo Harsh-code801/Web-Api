@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NzWalks.Api.Dtos;
 using NzWalks.Api.Models.Domain;
 using NzWalks.Api.Repositories;
@@ -20,9 +21,9 @@ namespace NzWalks.Api.Controllers
             this.walks = walks;
         }
         [HttpGet]
-        public async Task<IActionResult> GetWalks()
+        public async Task<IActionResult> GetWalks([FromQuery] string? filterOn, [FromQuery] string? filterValue, [FromQuery] int pageSize = 1000, [FromQuery] int pageNumbers = 1)
         {
-            var walksLst = await walks.GetWalks();
+            var walksLst = await walks.GetWalks(filterOn, filterValue, pageSize, pageNumbers);
             return Ok(autoMapper.Map<List<WalksDto>>(walksLst));
             //return Ok(walksLst);
         }
@@ -38,9 +39,14 @@ namespace NzWalks.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalks(WalksInput walksInput)
         {
-            var walksData = autoMapper.Map<Walks>(walksInput);
-            await walks.AddWalk(walksData);
-            return Ok(walksData);
+            if (ModelState.IsValid)//this is not required bad request will handle by self.
+            {
+                var walksData = autoMapper.Map<Walks>(walksInput);
+                await walks.AddWalk(walksData);
+                return Ok(walksData);
+            }else
+                return BadRequest(ModelState);
+            
         }
         [HttpPut]
         public async Task<IActionResult> UpdateWalks(Guid id, WalksInput walksInput)
