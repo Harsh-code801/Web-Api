@@ -9,10 +9,13 @@ namespace NzWalks.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ITokenRepository tokenRepository;
+
         public UserManager<IdentityUser> UserManager { get; set; }
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager,ITokenRepository tokenRepository)
         {
             UserManager = userManager;
+            this.tokenRepository = tokenRepository;
         }        
 
         [HttpPost]
@@ -52,8 +55,17 @@ namespace NzWalks.Api.Controllers
                 var passwordMatch = await UserManager.CheckPasswordAsync(UserExist, loginUserDto.Password);
                 if (passwordMatch)
                 {
+                    var roles = await UserManager.GetRolesAsync(UserExist);
+
                     //create tocken
-                    return Ok();
+                    if(roles!=null)
+                    {
+                        var jwtToken = await tokenRepository.CreateJwtToken(UserExist, roles.ToList());
+                        
+                        return Ok(jwtToken);
+
+                    }
+
                 }
             }
             return NotFound("Username Or Password Not exist");

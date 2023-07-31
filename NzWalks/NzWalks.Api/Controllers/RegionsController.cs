@@ -12,7 +12,6 @@ namespace NzWalks.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class RegionsController : ControllerBase
     {
         private readonly IResionRepositories sqlResionRepositories;
@@ -23,6 +22,7 @@ namespace NzWalks.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetRegions()
         {
             var regions = await sqlResionRepositories.GetRegions();
@@ -40,6 +40,7 @@ namespace NzWalks.Api.Controllers
         }
         [HttpGet]
         [Route("{id:Guid}")]//id is case sensitive with parameters id
+        [Authorize(Roles = "Reader,writer")]
         public async Task<IActionResult> GetRegionsById(Guid id)
         {
             var region = await sqlResionRepositories.GetRegionsById(id);
@@ -51,6 +52,7 @@ namespace NzWalks.Api.Controllers
                 return NotFound();
         }
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> AddRegion([FromBody] Region region)
         {
             region.Id = Guid.NewGuid();
@@ -59,6 +61,7 @@ namespace NzWalks.Api.Controllers
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateRegion(Guid id,[FromBody] Region region) 
         {
             var regionupdate = await sqlResionRepositories.UpdateRegion(id, region);
@@ -71,6 +74,7 @@ namespace NzWalks.Api.Controllers
         }
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
             var region = await sqlResionRepositories.DeleteRegion(id);
