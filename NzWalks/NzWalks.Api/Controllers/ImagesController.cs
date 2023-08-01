@@ -15,7 +15,7 @@ namespace NzWalks.Api.Controllers
             validateImage(image);
             if (ModelState.IsValid)
             {
-
+                //Upload Image Code
             }
             return BadRequest(ModelState);
 
