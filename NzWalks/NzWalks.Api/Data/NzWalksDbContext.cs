@@ -12,6 +12,7 @@ namespace NzWalks.Api.Data
         public DbSet<Walks> walks { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Difficulty> Difficulties { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         //For Migration of Region And Difficulty data in db (insertion in DB)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
