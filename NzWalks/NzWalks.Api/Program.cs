@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NzWalks.Api.AutoMapper;
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -52,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<NzWalksDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksServer")));
 builder.Services.AddDbContext<NzWalksAuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NzWalksAuthServer")));
 
+builder.Services.AddScoped<IImageRepository, ImageUpload>();
 builder.Services.AddScoped<IResionRepositories, SqlResionRepositories>();
 builder.Services.AddScoped<IWalks, SqlWalksRepositories>();
 builder.Services.AddScoped<ITokenRepository, JwtToken>();
@@ -93,6 +96,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+     FileProvider = new PhysicalFileProvider (Path.Combine(Directory.GetCurrentDirectory(),"Images")),
+     RequestPath = "/Images"
+});
 
 app.MapControllers();
 

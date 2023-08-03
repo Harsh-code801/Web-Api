@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NzWalks.Api.Dtos;
 using NzWalks.Api.Models.Domain;
+using NzWalks.Api.Repositories;
 
 namespace NzWalks.Api.Controllers
 {
@@ -8,19 +10,34 @@ namespace NzWalks.Api.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
+        private readonly IImageRepository imageRepository;
+
+        public ImagesController(IImageRepository imageRepository)
+        {
+            this.imageRepository = imageRepository;
+        }
         [HttpPost]
         [Route("Upload")]
-        public async Task<IActionResult> Upload([FromForm] Image image)
+        public async Task<IActionResult> Upload([FromForm] ImageUploadDto request)
         {
-            validateImage(image);
+            validateImage(request);
             if (ModelState.IsValid)
             {
-                //Upload Image Code
+                Image image = new Image()
+                {
+                    File = request.File,
+                    FileSize = request.File.Length,
+                    FileDescription = request.FileDescription,
+                    FileName = request.FileName,
+                    FileExtension = Path.GetExtension(request.File.FileName)
+                };
+                imageRepository.UploadImage(image);
+                return Ok(image);
             }
             return BadRequest(ModelState);
 
         }
-        private void validateImage(Image image)
+        private void validateImage(ImageUploadDto image)
         {
             string[] supportedExtension = new string[] { ".png", ".tif", ".jpeg",".pdf" };
 
