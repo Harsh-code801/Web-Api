@@ -26,17 +26,9 @@ namespace NzWalks.Api.Repositories
 
             var webAccessPath = $"{httpContextAccessor.HttpContext.Request.Scheme}:/{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}/Images/{image.FileName}{image.FileExtension}";
             image.FilePath = webAccessPath;
-           // image.Id = Guid.NewGuid();
-            try
-            {
-                await nzWalksDbContext.Images.AddAsync(image);
-                await nzWalksDbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-
-                
-            }
+            // image.Id = Guid.NewGuid();
+            await nzWalksDbContext.Images.AddAsync(image);
+            await nzWalksDbContext.SaveChangesAsync();
             return image;
         }
     }

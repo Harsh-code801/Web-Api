@@ -15,16 +15,21 @@ namespace NzWalks.Api.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly IResionRepositories sqlResionRepositories;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(IResionRepositories sqlResionRepositories)
+        public RegionsController(IResionRepositories sqlResionRepositories,ILogger<RegionsController> logger)
         {
             this.sqlResionRepositories = sqlResionRepositories;
+            this.logger = logger;
         }
 
         [HttpGet]
         [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetRegions()
         {
+            logger.LogDebug("Debug Log");
+            logger.LogError("Hello Brother Harsh");
+
             var regions = await sqlResionRepositories.GetRegions();
             #region AutoMapper
             /*var config = new MapperConfiguration(cfg =>
@@ -35,7 +40,7 @@ namespace NzWalks.Api.Controllers
             IMapper iMapper = config.CreateMapper();
             var MappedValuc = iMapper.Map<List<Region>, List<RegionDto>>(regions);*/
             #endregion
-
+            logger.LogWarning("Request are completed");
             return Ok(regions);
         }
         [HttpGet]

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -9,10 +10,22 @@ using Microsoft.OpenApi.Models;
 using NzWalks.Api.AutoMapper;
 using NzWalks.Api.Data;
 using NzWalks.Api.Dtos;
+using NzWalks.Api.MiddleWare;
 using NzWalks.Api.Repositories;
+using Serilog;
+using Serilog.Formatting;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+    .WriteTo.File($"C:\\Users\\harsh\\Desktop\\Logs\\nZwalks\\nZWalk.log",rollingInterval:RollingInterval.Day)
+    //.MinimumLevel.Debug()
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 
@@ -92,6 +105,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionHendlerMiddleware>();
 
 app.UseHttpsRedirection();
 

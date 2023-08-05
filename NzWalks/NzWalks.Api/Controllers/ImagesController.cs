@@ -20,6 +20,7 @@ namespace NzWalks.Api.Controllers
         [Route("Upload")]
         public async Task<IActionResult> Upload([FromForm] ImageUploadDto request)
         {
+            throw new Exception("a bhai");
             validateImage(request);
             if (ModelState.IsValid)
             {
