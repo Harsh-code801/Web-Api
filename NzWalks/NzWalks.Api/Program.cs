@@ -30,6 +30,17 @@ builder.Logging.AddSerilog(logger);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v2", new OpenApiInfo { Title = "Api Decription", Version = "v2" });
+
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = "NzWalks.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
 builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

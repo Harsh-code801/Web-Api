@@ -23,6 +23,10 @@ namespace NzWalks.Api.Controllers
             this.logger = logger;
         }
 
+
+        /// <summary>
+        /// Provice Regions List
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetRegions()

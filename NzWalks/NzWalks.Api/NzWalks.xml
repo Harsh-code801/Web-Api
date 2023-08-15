@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NzWalks.Api</name>
+    </assembly>
+    <members>
+        <member name="M:NzWalks.Api.Controllers.RegionsController.GetRegions">
+            <summary>
+            Provice Regions List
+            </summary>
+        </member>
+        <member name="T:NzWalks.Api.Migrations.InnitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.InnitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.InnitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.InnitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NzWalks.Api.Migrations.RegionAndDifficultyMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.RegionAndDifficultyMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.RegionAndDifficultyMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.RegionAndDifficultyMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NzWalks.Api.Migrations.AddImageTable">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.AddImageTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.AddImageTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.AddImageTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:NzWalks.Api.Migrations.NzWalksAuthDb.AuthDBWithData">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.NzWalksAuthDb.AuthDBWithData.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.NzWalksAuthDb.AuthDBWithData.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:NzWalks.Api.Migrations.NzWalksAuthDb.AuthDBWithData.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
