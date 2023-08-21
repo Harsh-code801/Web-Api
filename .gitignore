@@ -12,3 +12,5 @@
 *.config
 /NzWalks/.vs/NzWalks/FileContentIndex/520d96dc-e685-4914-a544-93224fdb9fcf.vsidx
 /NzWalks/.vs/ProjectEvaluation
+/NzWalks/NzWalks.Web/bin/Debug/net7.0
+/NzWalks/NzWalks.Web/obj
